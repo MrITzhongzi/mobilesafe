@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
-    <paths>
-        <external-path name="external" path="/demo" />
-    </paths>
-</resources>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--<files-path name="external1" path="." />-->
+    <!--<cache-path name="external2" path="." />-->
+    <external-path name="external3" path="." />
+    <!--<external-files-path name="external4" path="." />-->
+    <!--<external-cache-path name="external5" path="." />-->
+</paths>

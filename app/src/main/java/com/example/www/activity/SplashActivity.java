@@ -104,7 +104,7 @@ public class SplashActivity extends AppCompatActivity {
     private void downloadApk() {
         // 判断sdk是否可用
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "demo" + File.separator + "mobilesafe.apk";
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "mobilesafe.apk";
             //发送请求，获取apk
             RequestParams params = new RequestParams(mDownloadUrl);
 //            params.setUri(path);
@@ -176,13 +176,15 @@ public class SplashActivity extends AppCompatActivity {
             /* 调用getMIMEType()来取得MimeType */
             String type = "application/vnd.android.package-archive";
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
-                intent.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);//增加读写权限
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);//增加读写权限
                 Uri uri =  FileProvider.getUriForFile(getApplicationContext(),  getApplicationContext().getPackageName() + ".fileprovider", result);
                 intent.setDataAndType(uri, type);
+
             } else {
 
                 intent.setDataAndType(Uri.fromFile(result), type);
             }
+
             startActivity(intent);
         } catch (Exception e) {
             ToastUtil.show(getApplication(), "安装出错");
@@ -197,8 +199,9 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        String[] permissions = {Manifest.permission.INTERNET, Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.REQUEST_INSTALL_PACKAGES,Manifest.permission.INSTALL_PACKAGES};
         // 动态申请权限
-        requestPermissions(new String[]{Manifest.permission.INTERNET, Manifest.permission.WRITE_EXTERNAL_STORAGE}, SUCCESSCODE);
+        requestPermissions(permissions , SUCCESSCODE);
     }
 
     @Override
