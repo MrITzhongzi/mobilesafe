@@ -1,35 +1,46 @@
 package com.example.www.activity;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
+import android.support.v4.content.FileProvider;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.www.mobilesafe.BuildConfig;
 import com.example.www.mobilesafe.R;
 import com.example.www.utils.StreamUtil;
+import com.example.www.utils.ToastUtil;
 
 import org.json.JSONObject;
+import org.xutils.common.Callback;
+import org.xutils.ex.HttpException;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
 
+import java.io.File;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 
 public class SplashActivity extends AppCompatActivity {
 
     private TextView mTv_version_name;
     private int mLocalVersionCode;
-
+    private String mVersionDes;
+    private String mDownloadUrl;
     /**
      * 申请权限成功 请求码
      */
@@ -49,10 +60,10 @@ public class SplashActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case UPDATE_VERSION:
-
+                    showUpdateDialog();
                     break;
                 case ENTER_HOME:
-                        enterHome();
+                    enterHome();
                     break;
                 default:
 
@@ -62,6 +73,123 @@ public class SplashActivity extends AppCompatActivity {
     };
 
 
+    /**
+     * 弹出对话框提示用户更新
+     */
+    private void showUpdateDialog() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setIcon(R.drawable.launcher_bg); // 设置左上角图标
+        builder.setTitle("版本更新");
+        builder.setMessage(mVersionDes);
+        builder.setPositiveButton("立即更新", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // 下载 apk
+                downloadApk();
+            }
+        });
+        builder.setNegativeButton("稍后再说", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // 取消对话框， 进入主界面
+                enterHome();
+            }
+        });
+        builder.show();
+    }
+
+    /**
+     * 下载apk，防止apk的所在路径
+     */
+    private void downloadApk() {
+        // 判断sdk是否可用
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "demo" + File.separator + "mobilesafe.apk";
+            //发送请求，获取apk
+            RequestParams params = new RequestParams(mDownloadUrl);
+//            params.setUri(path);
+            params.setSaveFilePath(path);
+            Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<File>() {
+
+                private boolean hasError = false;
+                private File result = null;
+
+                @Override
+                public void onSuccess(File result) {
+                    // result 表示下载完成，手机中下载完成的file文件
+                    if (result != null) {
+                        this.result = result;
+                        ToastUtil.show(SplashActivity.this, "下载完成");
+                    }
+
+                }
+
+                @Override
+                public void onError(Throwable ex, boolean isOnCallback) {
+                    hasError = true;
+                    Toast.makeText(x.app(), ex.getMessage(), Toast.LENGTH_LONG).show();
+                    if (ex instanceof HttpException) { // 网络错误
+                        HttpException httpEx = (HttpException) ex;
+                        int responseCode = httpEx.getCode();
+                        String responseMsg = httpEx.getMessage();
+                        String errorResult = httpEx.getResult();
+                        ToastUtil.show(SplashActivity.this, responseMsg);
+                        ToastUtil.show(SplashActivity.this, errorResult);
+                    } else { // 其他错误
+                        // ...
+                        ToastUtil.show(SplashActivity.this, "其他错误");
+                    }
+                }
+
+                @Override
+                public void onCancelled(CancelledException cex) {
+
+                }
+
+                @Override
+                public void onFinished() {
+                    if (!hasError && result != null) {
+                        // 成功获取数据
+                        ToastUtil.show(SplashActivity.this, "下载成功");
+                        installApk(result);
+                    }
+                }
+
+            });
+            // cancelable.cancel(); // 取消请求
+        }
+    }
+
+    /**
+     * 安装对应的apk
+     *
+     * @param result 安装文件
+     */
+    private void installApk(File result) {
+        try {
+            // 用隐式意图开启系统安装界面
+            Intent intent = new Intent();
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setAction(android.content.Intent.ACTION_VIEW);
+            // 文件作为数据源
+            // 设置安装的类型
+            /* 调用getMIMEType()来取得MimeType */
+            String type = "application/vnd.android.package-archive";
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+                intent.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);//增加读写权限
+                Uri uri =  FileProvider.getUriForFile(getApplicationContext(),  getApplicationContext().getPackageName() + ".fileprovider", result);
+                intent.setDataAndType(uri, type);
+            } else {
+
+                intent.setDataAndType(Uri.fromFile(result), type);
+            }
+            startActivity(intent);
+        } catch (Exception e) {
+            ToastUtil.show(getApplication(), "安装出错");
+            e.printStackTrace();
+        }
+
+    }
 
 
     @Override
@@ -70,7 +198,7 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         // 动态申请权限
-        requestPermissions(new String[]{Manifest.permission.INTERNET}, SUCCESSCODE);
+        requestPermissions(new String[]{Manifest.permission.INTERNET, Manifest.permission.WRITE_EXTERNAL_STORAGE}, SUCCESSCODE);
     }
 
     @Override
@@ -81,6 +209,7 @@ public class SplashActivity extends AppCompatActivity {
                 initUI();
                 initData();
             }
+
         }
     }
 
@@ -142,9 +271,9 @@ public class SplashActivity extends AppCompatActivity {
                         // json解析
                         JSONObject jsonObject = new JSONObject(json);
                         String versionName = jsonObject.getString("versionName");
-                        String versionDes = jsonObject.getString("versionDes");
+                        mVersionDes = jsonObject.getString("versionDes");
                         String versionCode = jsonObject.getString("versionCode");
-                        String downloadUrl = jsonObject.getString("downloadUrl");
+                        mDownloadUrl = jsonObject.getString("downloadUrl");
 
 
                         // 比对版本号（服务器版本号大于本地版本号，提示用户更新）
@@ -162,7 +291,7 @@ public class SplashActivity extends AppCompatActivity {
                 } finally {
                     // 睡眠时间请求网络的时长 设置睡眠至少 4s
                     long endTime = System.currentTimeMillis();
-                    if(endTime - startTime < 4000) {
+                    if (endTime - startTime < 4000) {
                         try {
                             Thread.sleep(4000 - (endTime - startTime));
                         } catch (InterruptedException e) {
