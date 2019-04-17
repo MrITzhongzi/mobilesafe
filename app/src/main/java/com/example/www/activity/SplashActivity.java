@@ -11,10 +11,14 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.Constraints;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -71,6 +75,7 @@ public class SplashActivity extends AppCompatActivity {
             }
         }
     };
+    private ConstraintLayout mCl_root;
 
 
     /**
@@ -217,9 +222,20 @@ public class SplashActivity extends AppCompatActivity {
             if (PackageManager.PERMISSION_GRANTED == grantResults[0]) {
                 initUI();
                 initData();
+                // 初始化动画
+                initAnimation();
             }
 
         }
+    }
+
+    /**
+     * 添加淡入动画效果
+     */
+    private void initAnimation() {
+        AlphaAnimation alphaAnimation = new AlphaAnimation(0, 1);
+        alphaAnimation.setDuration(3000);
+        mCl_root.startAnimation(alphaAnimation);
     }
 
     /**
@@ -354,6 +370,6 @@ public class SplashActivity extends AppCompatActivity {
      */
     private void initUI() {
         mTv_version_name = (TextView) findViewById(R.id.tv_version_name);
-
+        mCl_root = (ConstraintLayout) findViewById(R.id.cl_root);
     }
 }

@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/launcher_bg"
-    tools:context="com.example.www.activity.SplashActivity">
+    tools:context="com.example.www.activity.SplashActivity"
+    android:id="@+id/cl_root">
 
     <TextView
         android:id="@+id/tv_version_name"
