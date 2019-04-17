@@ -95,6 +95,12 @@ public class SplashActivity extends AppCompatActivity {
                 enterHome();
             }
         });
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                enterHome();
+            }
+        });
         builder.show();
     }
 
@@ -175,9 +181,9 @@ public class SplashActivity extends AppCompatActivity {
             // 设置安装的类型
             /* 调用getMIMEType()来取得MimeType */
             String type = "application/vnd.android.package-archive";
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);//增加读写权限
-                Uri uri =  FileProvider.getUriForFile(getApplicationContext(),  getApplicationContext().getPackageName() + ".fileprovider", result);
+                Uri uri = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".fileprovider", result);
                 intent.setDataAndType(uri, type);
 
             } else {
@@ -199,9 +205,9 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        String[] permissions = {Manifest.permission.INTERNET, Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.REQUEST_INSTALL_PACKAGES,Manifest.permission.INSTALL_PACKAGES};
+        String[] permissions = {Manifest.permission.INTERNET, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.REQUEST_INSTALL_PACKAGES, Manifest.permission.INSTALL_PACKAGES};
         // 动态申请权限
-        requestPermissions(permissions , SUCCESSCODE);
+        requestPermissions(permissions, SUCCESSCODE);
     }
 
     @Override
