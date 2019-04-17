@@ -8,11 +8,16 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.example.www.mobilesafe.R;
+import com.example.www.utils.ConstantValue;
 
 public class SettingItemView extends ConstraintLayout {
 
     private CheckBox mCb_box;
     private TextView mTv_des;
+    private String tag = "SettingItemView";
+    private String mDestitle;
+    private String mDesoff;
+    private String mDeson;
 
     public SettingItemView(Context context) {
         this(context, null);
@@ -33,7 +38,28 @@ public class SettingItemView extends ConstraintLayout {
         mTv_des = (TextView) findViewById(R.id.tv_des);
         mCb_box = (CheckBox) findViewById(R.id.cb_box);
 
+        // 获取自定义的原生属性；
+        initAttrs(attrs);
+        // 获取布局文件中定义的字符串
+        tv_title.setText(mDestitle);
 
+    }
+
+    /**
+     * @param attrs 构造方法中维护好的属性集合
+     */
+    private void initAttrs(AttributeSet attrs) {
+//        for (int i = 0; i < attrs.getAttributeCount(); i++) {
+//            String attributeName = attrs.getAttributeName(i);
+//            String attributeValue = attrs.getAttributeValue(i);
+//            Log.i(tag, attributeName + " --- " + attributeValue);
+//            Log.i(tag, " ---分割线--- " );
+//
+//        }
+        //通过命名空间获取 我们自定义的属性值
+        mDestitle = attrs.getAttributeValue(ConstantValue.NAMESPACE, "destitle");
+        mDesoff = attrs.getAttributeValue(ConstantValue.NAMESPACE, "desoff");
+        mDeson = attrs.getAttributeValue(ConstantValue.NAMESPACE, "deson");
     }
 
     /**
@@ -51,9 +77,9 @@ public class SettingItemView extends ConstraintLayout {
     public  void setCheck(boolean isChesk){
         mCb_box.setChecked(isChesk);
         if(isChesk) {
-            mTv_des.setText("自动更新已开启");
+            mTv_des.setText(mDeson);
         } else {
-            mTv_des.setText("自动更新已关闭");
+            mTv_des.setText(mDesoff);
         }
     }
 }

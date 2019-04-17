@@ -16,7 +16,7 @@ public class SettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 
-        initUpdate();
+        initUpdate();// 初始化自动更新功能
     }
 
     /**

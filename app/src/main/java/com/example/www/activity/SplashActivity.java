@@ -24,6 +24,8 @@ import android.widget.Toast;
 
 import com.example.www.mobilesafe.BuildConfig;
 import com.example.www.mobilesafe.R;
+import com.example.www.utils.ConstantValue;
+import com.example.www.utils.SpUtil;
 import com.example.www.utils.StreamUtil;
 import com.example.www.utils.ToastUtil;
 
@@ -258,8 +260,12 @@ public class SplashActivity extends AppCompatActivity {
         mLocalVersionCode = getLocalVersionCode();
         // 服务端版本号（数据格式（json, xml））
         // json 中包含 ： 1、更新版本的版本名称 2、 新版本的描述 3、服务端的版本号 4、新版本apk的下载地址
-
-        checkVersion();
+        if(SpUtil.getBoolean(this, ConstantValue.OPEN_UPDATE, false)){
+            checkVersion();
+        } else {
+//            mHandler.sendMessageDelayed(, 4000);
+            mHandler.sendEmptyMessageDelayed(ENTER_HOME, 4000); // 可以直接传递消息的状态码。 让程序4秒后处理该消息
+        }
 
     }
 
