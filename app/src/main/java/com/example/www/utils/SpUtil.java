@@ -3,7 +3,7 @@ package com.example.www.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-public class SpUtils {
+public class SpUtil {
 
     private static SharedPreferences sSp = null;
 
