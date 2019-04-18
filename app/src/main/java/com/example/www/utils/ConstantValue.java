@@ -11,4 +11,9 @@ public class ConstantValue {
      * 自定义属性命名空间
      */
     public static final String NAMESPACE = "http://schemas.android.com/apk/res/com.example.www.mobilesafe";
+
+    /**
+     * 手机放到密码
+     */
+    public static final String MOBILE_SAFE_PWD = "pwd";
 }

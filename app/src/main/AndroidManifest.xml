@@ -36,7 +36,8 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name="com.example.www.activity.SettingActivity"></activity>
+        <activity android:name="com.example.www.activity.SettingActivity" />
+        <activity android:name="com.example.www.activity.TestActivity"></activity>
     </application>
 
 </manifest>

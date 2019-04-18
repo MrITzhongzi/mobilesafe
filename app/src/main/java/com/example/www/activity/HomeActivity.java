@@ -1,17 +1,24 @@
 package com.example.www.activity;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.www.mobilesafe.R;
+import com.example.www.utils.ConstantValue;
+import com.example.www.utils.SpUtil;
+import com.example.www.utils.ToastUtil;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -32,7 +39,8 @@ public class HomeActivity extends AppCompatActivity {
      * 初始化数据 （文字（9组），图片（9组））
      */
     private void initData() {
-        mTitles = new String[]{"手机防盗", "通讯卫士", "进程管理", "流量统计", "手机杀毒", "手机防盗", "缓存清理", "高级工具", "设置中心"};
+        mTitles = new String[]{"手机防盗", "通讯卫士", "进程管理",
+                "流量统计", "手机杀毒", "手机防盗", "缓存清理", "高级工具", "设置中心"};
         mDrawableIds = new int[]{R.drawable.home_safe, R.drawable.home_callmsgsafe, R.drawable.home_apps,
                 R.drawable.home_taskmanager, R.drawable.home_netmanager, R.drawable.home_trojan,
                 R.drawable.home_sysoptimize, R.drawable.home_tools, R.drawable.home_settings};
@@ -45,7 +53,8 @@ public class HomeActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 0:
-
+                        // 开启对话框
+                        showDialog();
                         break;
                     case 2:
 
@@ -71,6 +80,109 @@ public class HomeActivity extends AppCompatActivity {
                         break;
 
                 }
+            }
+        });
+    }
+
+    private void showDialog() {
+        // 判断
+        String pwd = SpUtil.getString(this, ConstantValue.MOBILE_SAFE_PWD, "");
+        if(TextUtils.isEmpty(pwd)) {
+            shoSetPwdDialog();
+        } else {
+            showConfirmDiglog();
+        }
+    }
+
+
+    /**
+     * 确认密码对话框
+     */
+    private void showConfirmDiglog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final AlertDialog alertDialog = builder.create();
+        final View view = View.inflate(this, R.layout.dialog_confirm_pwd,null);
+        alertDialog.setView(view);
+        alertDialog.show();
+
+        Button bt_submit = (Button) view.findViewById(R.id.bt_submit);
+        Button bt_cancel = (Button) view.findViewById(R.id.bt_cancel);
+
+        bt_submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText et_set_pwd = (EditText) view.findViewById(R.id.et_set_pwd);
+                String setPwd = et_set_pwd.getText().toString();
+
+                if(!TextUtils.isEmpty(setPwd)) {
+                    String pwd = SpUtil.getString(getApplicationContext(), ConstantValue.MOBILE_SAFE_PWD, "");
+                    if(setPwd.equals(pwd)) {
+                        ToastUtil.show(getApplicationContext(), "密码正确");
+                    } else {
+                        ToastUtil.show(getApplicationContext(), "密码错误");
+                    }
+
+                } else {
+                    ToastUtil.show(getApplicationContext(), "密码不能为空。");
+                }
+
+            }
+        });
+
+        bt_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+    }
+
+    /**
+     * 设置密码对话框
+     */
+    private void shoSetPwdDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final AlertDialog alertDialog = builder.create();
+        final View view = View.inflate(this, R.layout.dialog_set_pwd,null);
+        alertDialog.setView(view);
+        alertDialog.show();
+
+        Button bt_submit = (Button) view.findViewById(R.id.bt_submit);
+        Button bt_cancel = (Button) view.findViewById(R.id.bt_cancel);
+
+        bt_submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText et_set_pwd = (EditText) view.findViewById(R.id.et_set_pwd);
+                EditText et_confirm_pwd = (EditText) view.findViewById(R.id.et_confirm_pwd);
+                String setPwd = et_set_pwd.getText().toString();
+                String confirmPwd = et_confirm_pwd.getText().toString();
+
+                if(!TextUtils.isEmpty(setPwd) && !TextUtils.isEmpty(confirmPwd)) {
+                    if(setPwd.equals(confirmPwd)){
+                        // 进入手机放到模块
+                        Intent intent = new Intent(getApplicationContext(), TestActivity.class);
+                        startActivity(intent);
+
+                        alertDialog.dismiss();
+
+                        SpUtil.putString(getApplicationContext(), ConstantValue.MOBILE_SAFE_PWD, confirmPwd);
+
+                    } else {
+                        ToastUtil.show(getApplicationContext(), "两次输入的密码不一致。");
+                    }
+
+                } else {
+                    ToastUtil.show(getApplicationContext(), "密码不能为空。");
+                }
+
+            }
+        });
+
+        bt_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
             }
         });
     }
