@@ -37,7 +37,9 @@
         </provider>
 
         <activity android:name="com.example.www.activity.SettingActivity" />
-        <activity android:name="com.example.www.activity.TestActivity"></activity>
+        <activity android:name="com.example.www.activity.TestActivity" />
+        <activity android:name="com.example.www.activity.SetupOverActivity" />
+        <activity android:name="com.example.www.activity.Setup1Activity"></activity>
     </application>
 
 </manifest>

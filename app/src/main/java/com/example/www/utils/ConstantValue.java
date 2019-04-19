@@ -16,4 +16,8 @@ public class ConstantValue {
      * 手机放到密码
      */
     public static final String MOBILE_SAFE_PWD = "pwd";
+    /**
+     * 是否设置完成导航界面
+     */
+    public static final String SETUP_OVER = "setup_over";
 }

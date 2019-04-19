@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.www.mobilesafe.R;
 import com.example.www.utils.ConstantValue;
+import com.example.www.utils.Md5Util;
 import com.example.www.utils.SpUtil;
 import com.example.www.utils.ToastUtil;
 
@@ -102,7 +103,8 @@ public class HomeActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final AlertDialog alertDialog = builder.create();
         final View view = View.inflate(this, R.layout.dialog_confirm_pwd,null);
-        alertDialog.setView(view);
+//        alertDialog.setView(view); 为了兼容低版本，设置内边距为 0
+        alertDialog.setView(view,0,0,0,0);
         alertDialog.show();
 
         Button bt_submit = (Button) view.findViewById(R.id.bt_submit);
@@ -116,8 +118,12 @@ public class HomeActivity extends AppCompatActivity {
 
                 if(!TextUtils.isEmpty(setPwd)) {
                     String pwd = SpUtil.getString(getApplicationContext(), ConstantValue.MOBILE_SAFE_PWD, "");
-                    if(setPwd.equals(pwd)) {
-                        ToastUtil.show(getApplicationContext(), "密码正确");
+                    if(pwd.equals(Md5Util.encoder(setPwd))) {
+                        // 进入手机放到模块
+                        Intent intent = new Intent(getApplicationContext(), SetupOverActivity.class);
+                        startActivity(intent);
+
+                        alertDialog.dismiss();
                     } else {
                         ToastUtil.show(getApplicationContext(), "密码错误");
                     }
@@ -144,7 +150,8 @@ public class HomeActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final AlertDialog alertDialog = builder.create();
         final View view = View.inflate(this, R.layout.dialog_set_pwd,null);
-        alertDialog.setView(view);
+        //alertDialog.setView(view); 为了兼容低版本 给他设置内边距为 0
+        alertDialog.setView(view, 0,0,0,0);
         alertDialog.show();
 
         Button bt_submit = (Button) view.findViewById(R.id.bt_submit);
@@ -161,12 +168,12 @@ public class HomeActivity extends AppCompatActivity {
                 if(!TextUtils.isEmpty(setPwd) && !TextUtils.isEmpty(confirmPwd)) {
                     if(setPwd.equals(confirmPwd)){
                         // 进入手机放到模块
-                        Intent intent = new Intent(getApplicationContext(), TestActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), SetupOverActivity.class);
                         startActivity(intent);
 
                         alertDialog.dismiss();
 
-                        SpUtil.putString(getApplicationContext(), ConstantValue.MOBILE_SAFE_PWD, confirmPwd);
+                        SpUtil.putString(getApplicationContext(), ConstantValue.MOBILE_SAFE_PWD, Md5Util.encoder(confirmPwd));
 
                     } else {
                         ToastUtil.show(getApplicationContext(), "两次输入的密码不一致。");
