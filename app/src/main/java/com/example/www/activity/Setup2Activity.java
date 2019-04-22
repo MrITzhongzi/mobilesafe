@@ -1,11 +1,20 @@
 package com.example.www.activity;
 
+import android.Manifest;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.example.www.mobilesafe.R;
+import com.example.www.utils.ConstantValue;
+import com.example.www.utils.SpUtil;
 import com.example.www.view.SettingItemView;
 
 public class Setup2Activity extends AppCompatActivity {
@@ -17,13 +26,53 @@ public class Setup2Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup2);
 
+        initUI();
+    }
+
+    private void initUI() {
         mSiv_sim_bind = (SettingItemView) findViewById(R.id.siv_sim_bind);
+        // 读取已有的绑定状态  sp中是否存储了sim卡序列号
+        String sim_number = SpUtil.getString(this, ConstantValue.SIM_NUMBER, "");
+        if (TextUtils.isEmpty(sim_number)) {
+            mSiv_sim_bind.setCheck(false);
+        } else {
+            mSiv_sim_bind.setCheck(true);
+        }
         mSiv_sim_bind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                boolean isCheck = mSiv_sim_bind.isCheck();
+                mSiv_sim_bind.setCheck(!isCheck);
+                if (!isCheck) {
+
+                    requestPermissions(new String[]{Manifest.permission.READ_PHONE_STATE}, 100);
+
+                } else {
+                    // 删除存储卡号的节点
+                    SpUtil.remove(getApplicationContext(), ConstantValue.SIM_NUMBER);
+                }
 
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == 100 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            saveSimNumber();
+        }
+    }
+
+    public void saveSimNumber() {
+        if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+            // 存储
+            TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+            String simSerialNumber = tm.getSimSerialNumber();
+            if(TextUtils.isEmpty(simSerialNumber)) {
+                simSerialNumber = "123456";
+            }
+            SpUtil.putString(this, ConstantValue.SIM_NUMBER, simSerialNumber);
+        }
     }
 
     public void nextPage(View view) {

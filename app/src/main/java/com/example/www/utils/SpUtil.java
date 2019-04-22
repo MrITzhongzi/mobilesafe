@@ -70,4 +70,15 @@ public class SpUtil {
     }
 
 
+    /**删除某节点
+     * @param ctx 上下文
+     * @param key 移除节点的名称
+     */
+    public static void remove(Context ctx, String key) {
+        // 存储节点文件名称  读写方式
+        if(sSp == null) {
+            sSp = ctx.getSharedPreferences("config", Context.MODE_PRIVATE);
+        }
+        sSp.edit().remove(key).commit();
+    }
 }

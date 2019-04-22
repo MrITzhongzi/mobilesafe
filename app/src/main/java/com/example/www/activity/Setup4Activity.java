@@ -24,7 +24,7 @@ public class Setup4Activity extends AppCompatActivity {
     public void setFinesh(View view) {
         Intent intent = new Intent(getApplicationContext(), SetupOverActivity.class);
         startActivity(intent);
-        SpUtil.putBoolean(this, ConstantValue.SETUP_OVER, true);
+//        SpUtil.putBoolean(this, ConstantValue.SETUP_OVER, true);
         finish();
     }
 

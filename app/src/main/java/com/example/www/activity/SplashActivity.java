@@ -212,7 +212,9 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        String[] permissions = {Manifest.permission.INTERNET, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.REQUEST_INSTALL_PACKAGES, Manifest.permission.INSTALL_PACKAGES};
+        String[] permissions = {Manifest.permission.INTERNET, Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.REQUEST_INSTALL_PACKAGES,
+                Manifest.permission.INSTALL_PACKAGES};
         // 动态申请权限
         requestPermissions(permissions, SUCCESSCODE);
     }
