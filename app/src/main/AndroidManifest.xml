@@ -39,7 +39,13 @@
         <activity android:name="com.example.www.activity.SettingActivity" />
         <activity android:name="com.example.www.activity.TestActivity" />
         <activity android:name="com.example.www.activity.SetupOverActivity" />
-        <activity android:name="com.example.www.activity.Setup1Activity"></activity>
+        <activity android:name="com.example.www.activity.Setup1Activity" />
+        <activity android:name="com.example.www.activity.Setup2Activity" />
+        <activity android:name="com.example.www.activity.Setup3Activity" />
+        <activity
+            android:name="com.example.www.activity.Setup4Activity"
+            android:label="@string/title_activity_setup4"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

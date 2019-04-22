@@ -9,6 +9,7 @@
         <!--设置全局取消 标题栏-->
         <item name="windowNoTitle">true</item>
     </style>
+
     <style name="titleStyle">
         <item name="android:gravity">center_horizontal</item>
         <item name="android:textSize">20sp</item>
@@ -16,5 +17,36 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
+
+    <style name="nextBtn">
+        <item name="android:background">@drawable/selector_btn_next_bg</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:drawableRight">@drawable/next</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:text">下一页</item>
+        <item name="android:onClick">nextPage</item>
+    </style>
+
+    <style name="preBtn">
+        <item name="android:background">@drawable/selector_btn_next_bg</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:drawableLeft">@drawable/previous</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:text">下一页</item>
+        <item name="android:onClick">nextPage</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>
