@@ -37,7 +37,7 @@
         <item name="android:layout_marginEnd">8dp</item>
         <item name="android:layout_marginBottom">8dp</item>
         <item name="android:text">下一页</item>
-        <item name="android:onClick">nextPage</item>
+        <item name="android:onClick">prePage</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

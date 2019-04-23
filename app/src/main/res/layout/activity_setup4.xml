@@ -93,7 +93,6 @@
 
     <Button
         style="@style/nextBtn"
-        android:onClick="setFinesh"
         android:text="设置完成"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -103,7 +102,6 @@
         style="@style/preBtn"
         android:layout_marginStart="8dp"
         android:layout_marginBottom="8dp"
-        android:onClick="prePage"
         android:text="上一页"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
