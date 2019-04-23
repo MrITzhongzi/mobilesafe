@@ -66,6 +66,8 @@ public class Setup3Activity extends AppCompatActivity {
 
             finish();
             SpUtil.putString(this, ConstantValue.CONTACT_PHONE, phone);
+
+            overridePendingTransition(R.anim.next_in_anim, R.anim.next_out_anim);
         } else {
             ToastUtil.show(this, "请输入电话号码");
         }
@@ -76,5 +78,7 @@ public class Setup3Activity extends AppCompatActivity {
         startActivity(intent);
 
         finish();
+
+        overridePendingTransition(R.anim.pre_in_anim, R.anim.pre_out_anim);
     }
 }
