@@ -229,7 +229,6 @@ public class SplashActivity extends AppCompatActivity {
                 // 初始化动画
                 initAnimation();
             }
-
         }
     }
 
@@ -262,7 +261,7 @@ public class SplashActivity extends AppCompatActivity {
         mLocalVersionCode = getLocalVersionCode();
         // 服务端版本号（数据格式（json, xml））
         // json 中包含 ： 1、更新版本的版本名称 2、 新版本的描述 3、服务端的版本号 4、新版本apk的下载地址
-        if(SpUtil.getBoolean(this, ConstantValue.OPEN_UPDATE, false)){
+        if (SpUtil.getBoolean(this, ConstantValue.OPEN_UPDATE, false)) {
             checkVersion();
         } else {
 //            mHandler.sendMessageDelayed(, 4000);

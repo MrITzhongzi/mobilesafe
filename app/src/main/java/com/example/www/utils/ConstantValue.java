@@ -25,4 +25,12 @@ public class ConstantValue {
      * sim卡是否绑定
      */
     public static final String SIM_NUMBER = "sim_number";
+    /**
+     * 紧急联系人手机号
+     */
+    public static final String CONTACT_PHONE = "contact_phone";
+    /**
+     * 是否开启放到保护
+     */
+    public static final String OPEN_SECURITY = "open_security";
 }
