@@ -103,5 +103,4 @@ public class Setup2Activity extends BaseSetupActivity {
             SpUtil.putString(this, ConstantValue.SIM_NUMBER, simSerialNumber);
         }
     }
-
 }
