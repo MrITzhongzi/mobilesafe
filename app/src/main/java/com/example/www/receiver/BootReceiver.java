@@ -35,5 +35,6 @@ public class BootReceiver extends BroadcastReceiver {
             String contact_phone = SpUtil.getString(context, ConstantValue.CONTACT_PHONE, "");
             sm.sendTextMessage(contact_phone, null, "sim change!!!", null, null);
         }
+
     }
 }
