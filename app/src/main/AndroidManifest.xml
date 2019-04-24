@@ -8,7 +8,8 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.SEND_SMS"/>
     <permission android:name="android.permission.INSTALL_PACKAGES" />
 
     <application
@@ -49,7 +50,16 @@
             android:label="@string/title_activity_setup4"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name="com.example.www.activity.ContactListActivity" />
-        <activity android:name="com.example.www.activity.BaseSetupActivity"></activity>
+        <activity android:name="com.example.www.activity.BaseSetupActivity" />
+
+        <receiver
+            android:name="com.example.www.receiver.BootReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

@@ -214,7 +214,8 @@ public class SplashActivity extends AppCompatActivity {
 
         String[] permissions = {Manifest.permission.INTERNET, Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.REQUEST_INSTALL_PACKAGES,
-                Manifest.permission.INSTALL_PACKAGES};
+                Manifest.permission.INSTALL_PACKAGES, Manifest.permission.RECEIVE_BOOT_COMPLETED,
+                Manifest.permission.SEND_SMS};
         // 动态申请权限
         requestPermissions(permissions, SUCCESSCODE);
     }

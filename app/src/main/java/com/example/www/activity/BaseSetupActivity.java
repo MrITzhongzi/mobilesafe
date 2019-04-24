@@ -7,8 +7,9 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.example.www.mobilesafe.R;
+import com.example.www.myInterface.ISlide;
 
-public abstract class BaseSetupActivity extends AppCompatActivity {
+public class BaseSetupActivity extends AppCompatActivity implements ISlide {
     private GestureDetector mGestureDetector;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +32,20 @@ public abstract class BaseSetupActivity extends AppCompatActivity {
         });
     }
 
-    public abstract void showNextPage();
+//    public abstract void showNextPage();
+//
+//    public abstract void showPrePage();
 
-    public abstract void showPrePage();
+
+    @Override
+    public void showNextPage() {
+
+    }
+
+    @Override
+    public void showPrePage() {
+
+    }
 
     public void nextPage(View view) {
         showNextPage();
