@@ -40,6 +40,29 @@
         <item name="android:onClick">prePage</item>
     </style>
 
+    <style name="setupOverPhoneSafe">
+        <item name="android:textSize">17sp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
+    </style>
+
+    <style name="setupOverFunctionList">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:drawableLeft">@android:drawable/star_big_on</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+    
+    <style name="listDivider">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:background">@drawable/listview_divider</item>
+    </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
