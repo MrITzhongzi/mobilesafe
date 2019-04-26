@@ -39,6 +39,15 @@ public class SmsReceiver extends BroadcastReceiver {
                     Intent intent1 = new Intent(context, LocationService.class);
                     context.startService(intent1);
                 }
+
+                if(messageBody.contains("#*lockscreen*#")) {
+                    // 远程锁屏
+
+                }
+                if(messageBody.contains("#*wipedata*#")) {
+                    // 清楚数据
+
+                }
             }
         }
     }

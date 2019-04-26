@@ -15,4 +15,5 @@ public class TestActivity extends AppCompatActivity {
         textView.setText("TestActivity");
         setContentView(textView);
     }
+
 }
