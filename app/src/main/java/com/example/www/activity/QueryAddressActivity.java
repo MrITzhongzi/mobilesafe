@@ -1,8 +1,13 @@
 package com.example.www.activity;
 
+import android.annotation.TargetApi;
+import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -64,6 +69,7 @@ public class QueryAddressActivity extends AppCompatActivity {
         });
     }
 
+    @TargetApi(Build.VERSION_CODES.O)
     public void query(View view) {
         String phone = mEt_phone.getText().toString();
         if(!TextUtils.isDigitsOnly(phone)) {
@@ -72,6 +78,13 @@ public class QueryAddressActivity extends AppCompatActivity {
             // 手机号为空时，让手机抖动
             Animation shake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
             mEt_phone.startAnimation(shake);
+
+            // 手机震动
+            Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+//            VibrationEffect oneShot = VibrationEffect.createOneShot(3000,VibrationEffect.DEFAULT_AMPLITUDE);
+            // 震动规则（震动规则（不振时间，震动时间，不振时间，震动时间……））  带规则的震动
+            VibrationEffect waveform = VibrationEffect.createWaveform(new long[]{1000, 1000, 1000,1000,1000}, -1);
+            vibrator.vibrate(waveform);
         }
 
     }
