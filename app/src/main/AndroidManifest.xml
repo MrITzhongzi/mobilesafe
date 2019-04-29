@@ -8,12 +8,17 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW" />
 
     <permission android:name="android.permission.INSTALL_PACKAGES" />
 
@@ -25,7 +30,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.example.www.activity.QueryAddressActivity"></activity>
+
+        <activity android:name="com.example.www.activity.QueryAddressActivity" />
         <activity android:name="com.example.www.activity.AToolActivity" />
         <activity android:name="com.example.www.activity.SplashActivity">
             <intent-filter>
@@ -94,6 +100,10 @@
             android:name="com.example.www.service.LocationService"
             android:enabled="true"
             android:exported="true" />
+        <service
+            android:name="com.example.www.service.AddressService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>
