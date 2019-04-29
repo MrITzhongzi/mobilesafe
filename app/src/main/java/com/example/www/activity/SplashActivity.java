@@ -36,6 +36,8 @@ import org.xutils.http.RequestParams;
 import org.xutils.x;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -230,7 +232,51 @@ public class SplashActivity extends AppCompatActivity {
                 initData();
                 // 初始化动画
                 initAnimation();
+                // 初始化数据库
+                initDB();
             }
+        }
+    }
+
+    /***
+     * 初始化项目用到的联系人归属地的数据库
+     */
+    private void initDB() {
+        initAddressDB("address.db");
+    }
+
+    /***
+     *  把数据库文件拷贝到 files文件夹下
+     * @param dbName 数据库名称
+     */
+    private void initAddressDB(String dbName) {
+        InputStream open = null;
+        FileOutputStream fos = null;
+        File files = getFilesDir();
+        File file = new File(files, dbName);
+        if(file.exists()){
+            return;
+        }
+        try {
+            open = getAssets().open(dbName);
+            fos = new FileOutputStream(file);
+            byte[] bytes = new byte[1024];
+            int temp = -1;
+            while ((temp = open.read(bytes)) != -1) {
+                fos.write(bytes,0, temp);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if(open != null && fos != null) {
+                try {
+                    open.close();
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
         }
     }
 

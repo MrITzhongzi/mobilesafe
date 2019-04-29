@@ -24,7 +24,7 @@
      mobilesafe:desoff="自动更新已关闭"/>
  <com.example.www.view.SettingItemView
      xmlns:mobilesafe="http://schemas.android.com/apk/res/com.example.www.mobilesafe"
-     android:id="@+id/line1"
+     android:id="@+id/siv_address"
      android:layout_width="match_parent"
      android:layout_height="wrap_content"
      mobilesafe:destitle="电话归属地的显示设置"

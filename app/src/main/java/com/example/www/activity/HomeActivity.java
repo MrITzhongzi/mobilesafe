@@ -73,7 +73,8 @@ public class HomeActivity extends AppCompatActivity {
 
                         break;
                     case 7:
-
+                        Intent intent1 = new Intent(getApplicationContext(), AToolActivity.class);
+                        startActivity(intent1);
                         break;
                     case 8:
                         Intent intent = new Intent(getApplicationContext(), SettingActivity.class);

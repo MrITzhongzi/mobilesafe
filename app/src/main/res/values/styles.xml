@@ -63,6 +63,15 @@
         <item name="android:background">@drawable/listview_divider</item>
     </style>
 
+    <style name="aToolItem">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:background">@drawable/selector_atool_item_bg</item>
+        <item name="android:drawableLeft">@android:drawable/star_big_off</item>
+    </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

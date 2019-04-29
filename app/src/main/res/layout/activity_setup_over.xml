@@ -103,18 +103,18 @@
         app:layout_constraintTop_toBottomOf="@+id/textView16" />
 
     <TextView
-        android:id="@+id/textView18"
+        android:id="@+id/tv_wipe_data"
         style="@style/setupOverFunctionList"
         android:text="远程删除数据#wipedata#"
         app:layout_constraintStart_toStartOf="@+id/textView17"
         app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
     <TextView
-        android:id="@+id/textView19"
+        android:id="@+id/tv_lock_screen"
         style="@style/setupOverFunctionList"
         android:text="远程锁屏#lockscreen#"
-        app:layout_constraintStart_toStartOf="@+id/textView18"
-        app:layout_constraintTop_toBottomOf="@+id/textView18" />
+        app:layout_constraintStart_toStartOf="@+id/tv_wipe_data"
+        app:layout_constraintTop_toBottomOf="@+id/tv_wipe_data" />
 
     <ImageView
         android:id="@+id/imageView2"
