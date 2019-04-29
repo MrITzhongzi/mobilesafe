@@ -33,4 +33,8 @@ public class ConstantValue {
      * 是否开启放到保护
      */
     public static final String OPEN_SECURITY = "open_security";
+    /***
+     * 自定义吐司的背景颜色
+     */
+    public static final String TOAST_STYLE = "TOAST_STYLE";
 }
