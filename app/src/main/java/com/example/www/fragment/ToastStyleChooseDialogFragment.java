@@ -1,10 +1,12 @@
 package com.example.www.fragment;
 
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,7 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 
 import com.example.www.mobilesafe.R;
+import com.example.www.utils.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,6 +47,15 @@ public class ToastStyleChooseDialogFragment extends DialogFragment {
 
         setStyle(DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Holo_Light_Dialog_MinWidth);
         setCancelable(true);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // 设置dialog的宽高
+        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, 800);
     }
 
     @Nullable
@@ -54,9 +66,23 @@ public class ToastStyleChooseDialogFragment extends DialogFragment {
         mBtn_toast_makesure = (Button) v.findViewById(R.id.btn_toast_makesure);
         mBtn_toast_cancel = (Button) v.findViewById(R.id.btn_toast_cancel);
 
+        mBtn_toast_makesure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToastUtil.show(getActivity(), "sure");
+            }
+        });
+        mBtn_toast_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToastUtil.show(getActivity(), "cancel");
+            }
+        });
+
         initData();
 
         mLv_toast_style_list.setAdapter(new MyAdapter());
+
         return v;
     }
 
@@ -119,18 +145,6 @@ public class ToastStyleChooseDialogFragment extends DialogFragment {
             CheckBox cb_toast_style_item = (CheckBox) v.findViewById(R.id.cb_toast_style_item);
             cb_toast_style_item.setText(tempMap.get("name").toString());
 
-            mBtn_toast_makesure.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
-            mBtn_toast_cancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
             return v;
         }
     }
