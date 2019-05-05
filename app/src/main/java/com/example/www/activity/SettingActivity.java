@@ -127,4 +127,8 @@ public class SettingActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void testClick(View view) {
+        startActivity(new Intent(this, TestActivity.class));
+    }
 }

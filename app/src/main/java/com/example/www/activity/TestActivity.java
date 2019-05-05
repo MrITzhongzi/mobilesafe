@@ -13,7 +13,7 @@ public class TestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         TextView textView = new TextView(this);
         textView.setText("TestActivity");
-        setContentView(textView);
+        setContentView(R.layout.activity_test);
     }
 
 }

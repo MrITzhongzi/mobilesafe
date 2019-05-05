@@ -1,19 +1,17 @@
 package com.example.www.fragment;
 
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.ListView;
+import android.widget.RadioGroup;
 
 import com.example.www.mobilesafe.R;
 import com.example.www.utils.ToastUtil;
@@ -27,11 +25,11 @@ import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 public class ToastStyleChooseDialogFragment extends DialogFragment {
 
-    private ListView mLv_toast_style_list;
     private Button mBtn_toast_makesure;
     private Button mBtn_toast_cancel;
     private List<Map<String, Object>> colorList = new ArrayList<>();
     private int[] colors = new int[]{Color.TRANSPARENT, R.color.orange, Color.BLUE, Color.GRAY, Color.GREEN};
+    private RadioGroup mRg_choose_color;
 
     public static ToastStyleChooseDialogFragment newInstance(String title){
         ToastStyleChooseDialogFragment t = new ToastStyleChooseDialogFragment();
@@ -62,9 +60,32 @@ public class ToastStyleChooseDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.dialog_fragment_toast_style_choose, container, false);
-        mLv_toast_style_list = (ListView) v.findViewById(R.id.lv_toast_style_list);
         mBtn_toast_makesure = (Button) v.findViewById(R.id.btn_toast_makesure);
         mBtn_toast_cancel = (Button) v.findViewById(R.id.btn_toast_cancel);
+        mRg_choose_color = (RadioGroup) v.findViewById(R.id.rg_choose_color);
+
+        mRg_choose_color.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case R.id.rb_color_transparent:
+                        ToastUtil.show(getActivity(), "transparent");
+                        break;
+                    case R.id.rb_color_orange:
+                        ToastUtil.show(getActivity(), "rb_color_orange");
+                        break;
+                    case R.id.rb_color_blue:
+                        ToastUtil.show(getActivity(), "rb_color_blue");
+                        break;
+                    case R.id.rb_color_grey:
+                        ToastUtil.show(getActivity(), "rb_color_grey");
+                        break;
+                    case R.id.rb_color_green:
+                        ToastUtil.show(getActivity(), "rb_color_green");
+                        break;
+                }
+            }
+        });
 
         mBtn_toast_makesure.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,74 +100,7 @@ public class ToastStyleChooseDialogFragment extends DialogFragment {
             }
         });
 
-        initData();
-
-        mLv_toast_style_list.setAdapter(new MyAdapter());
-
         return v;
-    }
-
-    private void initData() {
-        Map<String, Object> map0 = new HashMap<>();
-        map0.put("name", "透明");
-        map0.put("color", colors[0]);
-
-        Map<String, Object> map1 = new HashMap<>();
-        map1.put("name", "橙色");
-        map1.put("color", colors[1]);
-
-        Map<String, Object> map2 = new HashMap<>();
-        map2.put("name", "蓝色");
-        map2.put("color", colors[2]);
-
-        Map<String, Object> map3 = new HashMap<>();
-        map3.put("name", "灰色");
-        map3.put("color", colors[3]);
-
-        Map<String, Object> map4 = new HashMap<>();
-        map4.put("name", "绿色");
-        map4.put("color", colors[4]);
-
-        colorList.add(map0);
-        colorList.add(map1);
-        colorList.add(map2);
-        colorList.add(map3);
-        colorList.add(map4);
-    }
-
-
-    class MyAdapter extends BaseAdapter{
-        @Override
-        public int getCount() {
-            return colorList.size();
-        }
-
-        @Override
-        public Map<String, Object> getItem(int position) {
-            return colorList.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return Integer.parseInt(colorList.get(position).get("color").toString());
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View v = null;
-            if(convertView != null) {
-                v = convertView;
-            } else {
-                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
-                v = inflater.inflate(R.layout.toast_style_item, null);
-            }
-            Map<String, Object> tempMap = getItem(position);
-
-            CheckBox cb_toast_style_item = (CheckBox) v.findViewById(R.id.cb_toast_style_item);
-            cb_toast_style_item.setText(tempMap.get("name").toString());
-
-            return v;
-        }
     }
 
 //    @NonNull
