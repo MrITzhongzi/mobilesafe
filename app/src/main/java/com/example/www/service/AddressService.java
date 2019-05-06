@@ -100,6 +100,11 @@ public class AddressService extends Service {
         mViewToast = View.inflate(this, R.layout.toast_view, null);
         mTv_address = (TextView) mViewToast.findViewById(R.id.tv_toast);
 
+        //读取吐司的坐标值
+        //左上角的x的坐标
+        params.x = SpUtil.getInt(getApplicationContext(), ConstantValue.LOCATION_X, 0);
+        params.y = SpUtil.getInt(getApplicationContext(), ConstantValue.LOCATION_Y, 0);
+
         // 从sp中获取索引，匹配图片
         int[] colorId = {R.drawable.call_locate_white, R.drawable.call_locate_orange, R.drawable.call_locate_blue,
                 R.drawable.call_locate_gray, R.drawable.call_locate_green};

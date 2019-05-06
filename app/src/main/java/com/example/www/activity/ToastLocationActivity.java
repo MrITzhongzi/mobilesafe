@@ -1,5 +1,6 @@
 package com.example.www.activity;
 
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,6 +26,7 @@ public class ToastLocationActivity extends AppCompatActivity {
     private int mHeight;
     private int mWidth;
     private long startTime = 0;
+    private long[] mHits = new long[2];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +63,19 @@ public class ToastLocationActivity extends AppCompatActivity {
             mBt_bottom.setVisibility(View.VISIBLE);
             mBt_top.setVisibility(View.INVISIBLE);
         }
+
+        mIv_drag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.arraycopy(mHits, 1, mHits, 0, mHits.length - 1);
+                mHits[mHits.length - 1] = SystemClock.uptimeMillis();
+                if(mHits[mHits.length - 1] - mHits[0] < 500) {
+                    // mHits的长度是几，就是几击事件。 是2的话就是双击事件，是三的话就是三击事件
+                    layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+                    mIv_drag.setLayoutParams(layoutParams);
+                }
+            }
+        });
 
         //监听某一个控件的拖拽过程(按下， 抬起， 移动)
         mIv_drag.setOnTouchListener(new View.OnTouchListener() {
@@ -126,7 +141,8 @@ public class ToastLocationActivity extends AppCompatActivity {
 
                 }
                 // false 不响应事件 true 响应事件
-                return true;
+                // 该控件既想要响应拖拽事件有想要响应点击事件的话就要返回false
+                return false;
             }
         });
 
