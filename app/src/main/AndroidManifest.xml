@@ -16,7 +16,6 @@
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW" />
 
@@ -30,7 +29,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name="com.example.www.activity.ToastLocationActivity"
+            android:theme="@style/MyActivityTheme"></activity>
         <activity android:name="com.example.www.activity.QueryAddressActivity" />
         <activity android:name="com.example.www.activity.AToolActivity" />
         <activity android:name="com.example.www.activity.SplashActivity">
@@ -103,7 +103,7 @@
         <service
             android:name="com.example.www.service.AddressService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
     </application>
 
 </manifest>

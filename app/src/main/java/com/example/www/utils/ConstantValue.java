@@ -41,4 +41,13 @@ public class ConstantValue {
      * 设置选中的吐司的radiobutton的选中状态
      */
     public static final String CHOOSE_TOAST_RADIO_BTN = "choose_toast_radio_btn";
+    /***
+     * 左上角的x轴的key
+     */
+    public static final String LOCATION_X = "location_x";
+
+    /***
+     * 左上角的y轴的key
+     */
+    public static final String LOCATION_Y = "location_y";
 }
