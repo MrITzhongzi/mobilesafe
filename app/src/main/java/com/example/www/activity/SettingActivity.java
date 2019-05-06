@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -23,9 +24,10 @@ import com.example.www.utils.ToastUtil;
 import com.example.www.view.SettingClickView;
 import com.example.www.view.SettingItemView;
 
-public class SettingActivity extends AppCompatActivity {
+public class SettingActivity extends AppCompatActivity{
 
     private String[] mColors;
+    private SettingClickView mSettingClickView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +49,12 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     private void initToastStyle() {
-        SettingClickView settingClickView = (SettingClickView) findViewById(R.id.scv_toast_style);
-        settingClickView.setTitle("电话归属地样式选择");
+        mSettingClickView = (SettingClickView) findViewById(R.id.scv_toast_style);
+        mSettingClickView.setTitle("电话归属地样式选择");
         mColors = new String[]{"透明", "橙色", "蓝色", "灰色", "绿色"};
         int toast_style = SpUtil.getInt(this, ConstantValue.TOAST_STYLE, 0);
-        settingClickView.setDes(mColors[toast_style]);
-        settingClickView.setOnClickListener(new View.OnClickListener() {
+        mSettingClickView.setDes(mColors[toast_style]);
+        mSettingClickView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showToastStyleDialog();
@@ -64,6 +66,12 @@ public class SettingActivity extends AppCompatActivity {
 
     private void showToastStyleDialog() {
         ToastStyleChooseDialogFragment toastStyleChooseDialogFragment = ToastStyleChooseDialogFragment.newInstance("选择样式");
+        toastStyleChooseDialogFragment.setOnDialogListener(new ToastStyleChooseDialogFragment.IToastStyleChooseDialogFragment() {
+            @Override
+            public void setColor(int color, String des) {
+                mSettingClickView.setDes(des);
+            }
+        });
         toastStyleChooseDialogFragment.show(getSupportFragmentManager(), "ToastStyleChooseDialogFragment");
     }
 
@@ -128,7 +136,4 @@ public class SettingActivity extends AppCompatActivity {
         });
     }
 
-    public void testClick(View view) {
-        startActivity(new Intent(this, TestActivity.class));
-    }
 }

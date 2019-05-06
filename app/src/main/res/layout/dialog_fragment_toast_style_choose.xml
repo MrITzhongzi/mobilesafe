@@ -21,21 +21,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!--<ListView-->
-        <!--android:id="@+id/lv_toast_style_list"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="0dp"-->
-        <!--android:layout_marginStart="8dp"-->
-        <!--android:layout_marginEnd="8dp"-->
-        <!--android:layout_marginBottom="8dp"-->
-        <!--android:minHeight="80dp"-->
-        <!--app:layout_constraintBottom_toTopOf="@+id/btn_toast_cancel"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintHorizontal_bias="0.0"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/tv_toast_title"-->
-        <!--app:layout_constraintVertical_bias="1.0" />-->
-
     <Button
         android:id="@+id/btn_toast_makesure"
         android:layout_width="0dp"

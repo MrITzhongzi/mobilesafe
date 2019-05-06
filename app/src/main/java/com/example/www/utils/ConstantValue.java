@@ -37,4 +37,8 @@ public class ConstantValue {
      * 自定义吐司的背景颜色
      */
     public static final String TOAST_STYLE = "TOAST_STYLE";
+    /***
+     * 设置选中的吐司的radiobutton的选中状态
+     */
+    public static final String CHOOSE_TOAST_RADIO_BTN = "choose_toast_radio_btn";
 }

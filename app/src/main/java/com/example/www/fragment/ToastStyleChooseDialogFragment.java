@@ -8,20 +8,17 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.RadioGroup;
 
 import com.example.www.mobilesafe.R;
+import com.example.www.utils.ConstantValue;
+import com.example.www.utils.SpUtil;
 import com.example.www.utils.ToastUtil;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 public class ToastStyleChooseDialogFragment extends DialogFragment {
 
@@ -30,6 +27,8 @@ public class ToastStyleChooseDialogFragment extends DialogFragment {
     private List<Map<String, Object>> colorList = new ArrayList<>();
     private int[] colors = new int[]{Color.TRANSPARENT, R.color.orange, Color.BLUE, Color.GRAY, Color.GREEN};
     private RadioGroup mRg_choose_color;
+    IToastStyleChooseDialogFragment mIToastStyleChooseDialogFragment;
+
 
     public static ToastStyleChooseDialogFragment newInstance(String title){
         ToastStyleChooseDialogFragment t = new ToastStyleChooseDialogFragment();
@@ -39,13 +38,19 @@ public class ToastStyleChooseDialogFragment extends DialogFragment {
         return t;
     }
 
+    public interface IToastStyleChooseDialogFragment{
+        void setColor(int color, String des);
+    }
+    public void setOnDialogListener(IToastStyleChooseDialogFragment toastStyleChooseDialogFragment){
+        this.mIToastStyleChooseDialogFragment = toastStyleChooseDialogFragment;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setStyle(DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Holo_Light_Dialog_MinWidth);
         setCancelable(true);
-
     }
 
     @Override
@@ -56,6 +61,8 @@ public class ToastStyleChooseDialogFragment extends DialogFragment {
         getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, 800);
     }
 
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -63,27 +70,36 @@ public class ToastStyleChooseDialogFragment extends DialogFragment {
         mBtn_toast_makesure = (Button) v.findViewById(R.id.btn_toast_makesure);
         mBtn_toast_cancel = (Button) v.findViewById(R.id.btn_toast_cancel);
         mRg_choose_color = (RadioGroup) v.findViewById(R.id.rg_choose_color);
-
+        mRg_choose_color.check(SpUtil.getInt(getActivity(), ConstantValue.CHOOSE_TOAST_RADIO_BTN, colors[0]));
         mRg_choose_color.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // 设置 radiobutton为选中状态
+                SpUtil.putInt(getActivity(), ConstantValue.CHOOSE_TOAST_RADIO_BTN, checkedId);
                 switch (checkedId){
                     case R.id.rb_color_transparent:
-                        ToastUtil.show(getActivity(), "transparent");
+                        mIToastStyleChooseDialogFragment.setColor(colors[0], "透明");
+                        SpUtil.putInt(getActivity(), ConstantValue.TOAST_STYLE,0);
                         break;
                     case R.id.rb_color_orange:
-                        ToastUtil.show(getActivity(), "rb_color_orange");
+                        mIToastStyleChooseDialogFragment.setColor(colors[1],"橙色");
+                        SpUtil.putInt(getActivity(), ConstantValue.TOAST_STYLE, 1);
                         break;
                     case R.id.rb_color_blue:
-                        ToastUtil.show(getActivity(), "rb_color_blue");
+                        mIToastStyleChooseDialogFragment.setColor(colors[2],"蓝色");
+                        SpUtil.putInt(getActivity(), ConstantValue.TOAST_STYLE, 2);
                         break;
                     case R.id.rb_color_grey:
-                        ToastUtil.show(getActivity(), "rb_color_grey");
+                        mIToastStyleChooseDialogFragment.setColor(colors[3],"灰色");
+                        SpUtil.putInt(getActivity(), ConstantValue.TOAST_STYLE, 3);
                         break;
                     case R.id.rb_color_green:
-                        ToastUtil.show(getActivity(), "rb_color_green");
+                        mIToastStyleChooseDialogFragment.setColor(colors[4],"绿色");
+                        SpUtil.putInt(getActivity(), ConstantValue.TOAST_STYLE, 4);
                         break;
                 }
+
+                dismiss();
             }
         });
 
@@ -91,12 +107,14 @@ public class ToastStyleChooseDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 ToastUtil.show(getActivity(), "sure");
+                dismiss();
             }
         });
         mBtn_toast_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ToastUtil.show(getActivity(), "cancel");
+                dismiss();
             }
         });
 

@@ -17,6 +17,8 @@ import android.widget.TextView;
 
 import com.example.www.engine.AddressDao;
 import com.example.www.mobilesafe.R;
+import com.example.www.utils.ConstantValue;
+import com.example.www.utils.SpUtil;
 
 public class AddressService extends Service {
 
@@ -97,6 +99,13 @@ public class AddressService extends Service {
         // 吐司的显示效果
         mViewToast = View.inflate(this, R.layout.toast_view, null);
         mTv_address = (TextView) mViewToast.findViewById(R.id.tv_toast);
+
+        // 从sp中获取索引，匹配图片
+        int[] colorId = {R.drawable.call_locate_white, R.drawable.call_locate_orange, R.drawable.call_locate_blue,
+                R.drawable.call_locate_gray, R.drawable.call_locate_green};
+        int toastStyleIndex = SpUtil.getInt(getApplicationContext(), ConstantValue.TOAST_STYLE, colorId[0]);
+        mTv_address.setBackgroundResource(colorId[toastStyleIndex]);
+
         //将吐司挂在到window的窗体上
         mWindowManager.addView(mViewToast, mParams);
 
