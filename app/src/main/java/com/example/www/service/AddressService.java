@@ -1,8 +1,10 @@
 package com.example.www.service;
 
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.PixelFormat;
 import android.os.Handler;
 import android.os.IBinder;
@@ -37,6 +39,7 @@ public class AddressService extends Service {
             mTv_address.setText(mAddress);
         }
     };
+    private InneOutCallReceiver mInneOutCallReceiver;
 
     public AddressService() {
     }
@@ -50,7 +53,26 @@ public class AddressService extends Service {
         mMyPhoneStateListener = new MyPhoneStateListener();
         mTelephonyManager.listen(mMyPhoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
         mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+
+        //监听拨出电话的广播(动态监听)
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Intent.ACTION_NEW_OUTGOING_CALL);
+        // h创建响应的广播接受者
+        mInneOutCallReceiver = new InneOutCallReceiver();
+        //注册光笔接受者
+        registerReceiver(mInneOutCallReceiver, intentFilter);
+
         super.onCreate();
+    }
+
+    class InneOutCallReceiver extends BroadcastReceiver{
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // 接收到此广播后需要显示自定义的吐司，并可侠士归属地号码。
+            String phone = getResultData(); // 获取播出电话号码的字符串
+            showToast(phone);
+        }
     }
 
     class MyPhoneStateListener extends PhoneStateListener {
@@ -144,6 +166,10 @@ public class AddressService extends Service {
         // 取消电话监听
         if (mTelephonyManager != null && mMyPhoneStateListener != null) {
             mTelephonyManager.listen(mMyPhoneStateListener, PhoneStateListener.LISTEN_NONE);
+        }
+        // 去电广播接受者的注销
+        if(mInneOutCallReceiver != null) {
+            unregisterReceiver(mInneOutCallReceiver);
         }
         super.onDestroy();
     }
