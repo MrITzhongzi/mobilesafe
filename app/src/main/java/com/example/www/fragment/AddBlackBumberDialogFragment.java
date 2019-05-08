@@ -21,6 +21,7 @@ import com.example.www.utils.ToastUtil;
 public class AddBlackBumberDialogFragment extends DialogFragment {
 
     private IAddBlackBumberDialogFragment mIAddBlackBumberDialogFragment = null;
+    private int mode = 1;
 
     public static AddBlackBumberDialogFragment newInstance() {
         return new AddBlackBumberDialogFragment();
@@ -51,27 +52,34 @@ public class AddBlackBumberDialogFragment extends DialogFragment {
         final RadioButton rbChooseMode = (RadioButton) view.findViewById(rgMode.getCheckedRadioButtonId());
         Button btnMakesure = (Button) view.findViewById(R.id.bt_makesure);
         Button btnCancel = (Button) view.findViewById(R.id.bt_cancel);
+
+        rgMode.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case R.id.rb_msg:
+                        mode = 1;
+                        break;
+                    case R.id.rb_phone:
+                        mode = 2;
+                        break;
+                    case R.id.rb_all_type:
+                        mode = 3;
+                        break;
+                }
+            }
+        });
+
         btnMakesure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String phone = etInputNumber.getText().toString();
-                String mode = rbChooseMode.getText().toString();
+
                 if (TextUtils.isEmpty(phone)) {
                     ToastUtil.show(getActivity(), "手机号码不能为空");
                 }
-                String modeNumber = "";
-                switch (mode){
-                    case "短信":
-                        modeNumber = "1";
-                        break;
-                    case "电话":
-                        modeNumber = "2";
-                        break;
-                    case "所有":
-                        modeNumber = "3";
-                        break;
-                }
-                mIAddBlackBumberDialogFragment.addPhoneNumber(phone, modeNumber);
+
+                mIAddBlackBumberDialogFragment.addPhoneNumber(phone, mode + "");
                 dismiss();
             }
         });

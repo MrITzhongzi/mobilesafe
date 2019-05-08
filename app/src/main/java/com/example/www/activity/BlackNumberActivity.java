@@ -5,6 +5,7 @@ import android.os.Message;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -26,9 +27,8 @@ public class BlackNumberActivity extends AppCompatActivity {
     private Button mBtnAdd;
     private BlackNumberDao mBlackNumberDao;
     private List<BlackNumberInfo> mAllData;
+    private MyAdapter mMyAdapter;
     private Handler mHandler = new Handler() {
-
-        private MyAdapter mMyAdapter;
 
         @Override
         public void handleMessage(Message msg) {
@@ -55,18 +55,37 @@ public class BlackNumberActivity extends AppCompatActivity {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View view;
-            if (convertView != null) {
-                view = convertView;
-            } else {
-                view = View.inflate(getApplicationContext(), R.layout.listview_blacknumber_item, null);
-            }
-            TextView tv_phone = (TextView) view.findViewById(R.id.tv_phone);
-            TextView tv_mode = (TextView) view.findViewById(R.id.tv_mode);
-            ImageView iv_delete = (ImageView) view.findViewById(R.id.iv_delete);
+        public View getView(final int position, View convertView, ViewGroup parent) {
 
-            tv_phone.setText(mAllData.get(position).getPhone());
+            ViewHolder viewHolder = null;
+            if (convertView == null) {
+                convertView = View.inflate(getApplicationContext(), R.layout.listview_blacknumber_item, null);
+
+                viewHolder = new ViewHolder();
+                viewHolder.tvPhone = (TextView) convertView.findViewById(R.id.tv_phone);
+                viewHolder.tvMode = (TextView) convertView.findViewById(R.id.tv_mode);
+                viewHolder.ivDelete = (ImageView) convertView.findViewById(R.id.iv_delete);
+
+                convertView.setTag(viewHolder);
+            } else {
+                 viewHolder = (ViewHolder)convertView.getTag();
+            }
+
+            viewHolder.ivDelete.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    //数据库执行删除操作
+                    mBlackNumberDao.delete(mAllData.get(position).getPhone());
+                    // 集合中删除
+                    mAllData.remove(position);
+                    if(mMyAdapter != null) {
+                        mMyAdapter.notifyDataSetChanged();
+                    }
+                }
+            });
+
+            viewHolder.tvPhone.setText(mAllData.get(position).getPhone());
             int mode = Integer.parseInt(mAllData.get(position).getMode());
             String modeName = "";
             switch (mode) {
@@ -83,10 +102,17 @@ public class BlackNumberActivity extends AppCompatActivity {
                     modeName = "未知";
                     break;
             }
-            tv_mode.setText(modeName);
+            viewHolder.tvMode.setText(modeName);
 
-            return view;
+            return convertView;
         }
+    }
+
+    class ViewHolder {
+        TextView tvPhone;
+        TextView tvMode;
+        ImageView ivDelete;
+
     }
 
     @Override
@@ -129,8 +155,16 @@ public class BlackNumberActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                mBlackNumberDao.insert(phone, mode);
-                                mAllData = mBlackNumberDao.findAll();
-                               mHandler.sendEmptyMessage(1);
+                                BlackNumberInfo blackNumberInfo = new BlackNumberInfo();
+                                blackNumberInfo.setPhone(phone);
+                                blackNumberInfo.setMode(mode);
+                                mAllData.add(blackNumberInfo);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mMyAdapter.notifyDataSetChanged();
+                                    }
+                                });
                             }
                         }.start();
                     }
