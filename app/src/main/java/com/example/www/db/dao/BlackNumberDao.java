@@ -129,4 +129,21 @@ public class BlackNumberDao {
         writableDatabase.close();
         return number;
     }
+
+    /***
+     * 查询电话号码的拦截模式
+     * @param phone  查询条件的电话
+     * @return 1 短信 2 电话 3 所有  0 没有拦截
+     */
+    public int getMode(String phone){
+        int mode = 0;
+        SQLiteDatabase writableDatabase = mBlackNumberOpenHelper.getWritableDatabase();
+        Cursor cursor = writableDatabase.query("blacknumber", new String[]{"mode"},"phone = ?", new String[]{phone}, null, null, null);
+        if(cursor.moveToNext()){
+            mode = cursor.getInt(0);
+        }
+        cursor.close();
+        writableDatabase.close();
+        return mode;
+    }
 }

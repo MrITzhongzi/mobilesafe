@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.www.fragment.ToastStyleChooseDialogFragment;
 import com.example.www.mobilesafe.R;
 import com.example.www.service.AddressService;
+import com.example.www.service.BlackNumberService;
 import com.example.www.utils.ConstantValue;
 import com.example.www.utils.ServiceUtil;
 import com.example.www.utils.SpUtil;
@@ -28,6 +29,7 @@ public class SettingActivity extends AppCompatActivity{
 
     private String[] mColors;
     private SettingClickView mSettingClickView;
+    private SettingItemView mSiv_blacknumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +47,33 @@ public class SettingActivity extends AppCompatActivity{
             initAddress();
             initToastStyle();
             initLocation();
+            initBlacknumber();
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    /***
+     *  拦截黑名单短信电话
+     */
+    private void initBlacknumber() {
+        mSiv_blacknumber = (SettingItemView) findViewById(R.id.siv_blacknumber);
+        boolean isRunning = ServiceUtil.isRunning(this, "com.example.www.service.BlackNumberService");
+        mSiv_blacknumber.setCheck(isRunning);
+
+        mSiv_blacknumber.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean isCheck = mSiv_blacknumber.isCheck();
+                mSiv_blacknumber.setCheck(!isCheck);
+                if(!isCheck) {
+                    //开启服务
+                    startService(new Intent(getApplicationContext(), BlackNumberService.class));
+                } else {
+                    //关闭服务
+                    stopService(new Intent(getApplicationContext(), BlackNumberService.class));
+                }
+            }
+        });
     }
 
     /***

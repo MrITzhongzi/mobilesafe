@@ -40,4 +40,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <com.example.www.view.SettingItemView xmlns:mobilesafe="http://schemas.android.com/apk/res/com.example.www.mobilesafe"
+        android:id="@+id/siv_blacknumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        mobilesafe:desoff="关闭电话号拦截"
+        mobilesafe:deson="开启电话号拦截"
+        mobilesafe:destitle="黑名单电话拦截设置" />
+
 </LinearLayout>
