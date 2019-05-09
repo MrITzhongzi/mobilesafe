@@ -30,15 +30,8 @@ public class ExampleInstrumentedTest {
         assertEquals("com.example.www.mobilesafe", appContext.getPackageName());
 
         BlackNumberDao instance = BlackNumberDao.getInstance(appContext);
-        instance.insert("110", "1");
-        instance.insert("111", "1");
-        instance.insert("112", "1");
-
-        instance.delete("111");
-
-        instance.update("112", "2");
-
-        List<BlackNumberInfo> all = instance.findAll();
-        Log.i("ExampleInstrumentedTest", "useAppContext: " + all);
+        for(int i = 100; i < 200; i++) {
+            instance.insert("1800000000" + i, (i % 3) + "");
+        }
     }
 }

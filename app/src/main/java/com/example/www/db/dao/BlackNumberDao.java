@@ -90,4 +90,43 @@ public class BlackNumberDao {
         writableDatabase.close();
         return blackInfoList;
     }
+
+    /***
+     *  每次查询20条
+     * @param index
+     * @return
+     */
+    public List<BlackNumberInfo> find(int index){
+        SQLiteDatabase writableDatabase = mBlackNumberOpenHelper.getWritableDatabase();
+        Cursor cursor = writableDatabase.rawQuery("select phone, mode from blacknumber order by _id desc limit ?,20;",new String[]{index + ""});
+        List<BlackNumberInfo> blackInfoList = new ArrayList<>();
+        while (cursor.moveToNext()){
+            BlackNumberInfo blackNumberInfo = new BlackNumberInfo();
+            String phone = cursor.getString(0);
+            String mode = cursor.getString(1);
+            blackNumberInfo.setMode(mode);
+            blackNumberInfo.setPhone(phone);
+
+            blackInfoList.add(blackNumberInfo);
+        }
+        cursor.close();
+        writableDatabase.close();
+        return blackInfoList;
+    }
+
+    /***
+     * 查询数据库中数据条数
+     * @return
+     */
+    public int getCount(){
+        int number = 0;
+        SQLiteDatabase writableDatabase = mBlackNumberOpenHelper.getWritableDatabase();
+        Cursor cursor = writableDatabase.rawQuery("select count(*) from blacknumber;", null);
+        if(cursor.moveToNext()){
+            number = cursor.getInt(0);
+        }
+        cursor.close();
+        writableDatabase.close();
+        return number;
+    }
 }

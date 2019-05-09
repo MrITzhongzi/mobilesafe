@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,6 +19,7 @@ import com.example.www.db.dao.BlackNumberDao;
 import com.example.www.db.domain.BlackNumberInfo;
 import com.example.www.fragment.AddBlackBumberDialogFragment;
 import com.example.www.mobilesafe.R;
+import com.example.www.utils.ToastUtil;
 
 import java.util.List;
 
@@ -28,12 +30,21 @@ public class BlackNumberActivity extends AppCompatActivity {
     private BlackNumberDao mBlackNumberDao;
     private List<BlackNumberInfo> mAllData;
     private MyAdapter mMyAdapter;
+    private boolean mIsLoad =false;
+    private List<BlackNumberInfo> mMoreData;
+    private int mCount;
     private Handler mHandler = new Handler() {
 
         @Override
         public void handleMessage(Message msg) {
-            mMyAdapter = new MyAdapter();
-            mLvBlackBumber.setAdapter(mMyAdapter);
+            if(mMyAdapter == null) {
+                mMyAdapter = new MyAdapter();
+                mLvBlackBumber.setAdapter(mMyAdapter);
+            } else {
+                mMyAdapter.notifyDataSetChanged();
+            }
+
+
         }
     };
 
@@ -112,7 +123,6 @@ public class BlackNumberActivity extends AppCompatActivity {
         TextView tvPhone;
         TextView tvMode;
         ImageView ivDelete;
-
     }
 
     @Override
@@ -131,8 +141,9 @@ public class BlackNumberActivity extends AppCompatActivity {
             @Override
             public void run() {
                 mBlackNumberDao = BlackNumberDao.getInstance(getApplicationContext());
-                mAllData = mBlackNumberDao.findAll();
 
+                //mAllData = mBlackNumberDao.findAll();// 查询所有数据
+                mAllData = mBlackNumberDao.find(0); //  查询20条，从第0条开始
                 mHandler.sendEmptyMessage(0);
             }
         }.start();
@@ -172,7 +183,51 @@ public class BlackNumberActivity extends AppCompatActivity {
             }
         });
 
+        mLvBlackBumber.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                //状态改变调用方法
+                //AbsListView.OnScrollListener.SCROLL_STATE_FLING 飞速滚动状态
+                //AbsListView.OnScrollListener.SCROLL_STATE_IDLE 空闲状态
+                //AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL 拿手触摸的滚动状态
+                if(mAllData != null) {
+                    // 滚动到停止状态（空闲中状态）  最后一个条目可见（最后一个条目的索引 >= 数据适配器中总条目个数 - 1）
+                    if(scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE
+                            && mLvBlackBumber.getLastVisiblePosition() >= mAllData.size() - 1
+                            && !mIsLoad) {
+                        // 加载下一页数据
+                        mIsLoad = true;
+
+                        mCount = mBlackNumberDao.getCount();
+                        if(mCount > mAllData.size()){
+                            new Thread() {
+
+                                @Override
+                                public void run() {
+                                    mBlackNumberDao = BlackNumberDao.getInstance(getApplicationContext());
+
+                                    //mAllData = mBlackNumberDao.findAll();// 查询所有数据
+                                    //  查询20条，从第0条开始
+                                    mMoreData = mBlackNumberDao.find(mAllData.size());
+                                    mAllData.addAll(mMoreData); //
+                                    mHandler.sendEmptyMessage(0);
+                                }
+                            }.start();
+                        } else {
+                            ToastUtil.show(getApplicationContext(), "已经没有更多电话");
+                        }
+
+                        mIsLoad = false;
+                    }
+                }
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                // 滚动过程中调用方法
+
+            }
+        });
     }
-
-
 }
