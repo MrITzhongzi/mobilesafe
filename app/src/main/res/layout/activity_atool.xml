@@ -23,7 +23,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_atool_title" />
 
     <TextView
-        android:id="@+id/textView18"
+        android:id="@+id/tv_sms_backup"
         style="@style/aToolItem"
         android:text="短信备份"
         app:layout_constraintEnd_toEndOf="parent"
@@ -36,7 +36,7 @@
         android:text="常用号码查询"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView18" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_sms_backup" />
 
     <TextView
         android:id="@+id/textView20"
@@ -45,4 +45,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView19" />
+
+    <ProgressBar
+        android:id="@+id/pb_sms_backup_progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_atool_title" />
 </android.support.constraint.ConstraintLayout>
