@@ -81,6 +81,7 @@ public class AToolActivity extends AppCompatActivity {
         }.start();
     }
     private void initPhoneAddress() {
+
         mTv_query_add = (TextView) findViewById(R.id.tv_query_add);
         mTv_query_add.setOnClickListener(new View.OnClickListener() {
             @Override

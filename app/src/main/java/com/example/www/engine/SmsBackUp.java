@@ -43,7 +43,9 @@ public class SmsBackUp {
 
             count = cursor.getCount();
 //            pb.setMax(count);
-            callBack.setMax(count);
+            if(callBack != null) {
+                callBack.setMax(count);
+            }
 
             FileOutputStream fos = new FileOutputStream(file);
             XmlSerializer xmlSerializer = Xml.newSerializer();
@@ -74,7 +76,7 @@ public class SmsBackUp {
 
                 index++;
 
-                Thread.sleep(1000);
+                Thread.sleep(500);
                 SmsBackUp.mHandler.sendEmptyMessage(0);
             }
             xmlSerializer.endTag(null, "smss");

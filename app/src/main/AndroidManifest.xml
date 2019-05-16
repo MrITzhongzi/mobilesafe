@@ -18,7 +18,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW" />
-    <uses-permission android:name="android.permission.READ_SMS"/>
+    <uses-permission android:name="android.permission.READ_SMS" />
 
     <permission android:name="android.permission.INSTALL_PACKAGES" />
 
@@ -30,11 +30,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name="com.example.www.activity.AppManagerActivity"></activity>
+
         <service
             android:name="com.example.www.service.BlackNumberService"
             android:enabled="true"
-            android:exported="true"
-            ></service>
+            android:exported="true" />
 
         <activity android:name="com.example.www.activity.BlackNumberActivity" />
         <activity
