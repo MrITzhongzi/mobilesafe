@@ -22,6 +22,9 @@ public class MyApplication extends Application {
             public void uncaughtException(Thread t, Throwable e) {
                 e.printStackTrace();
                 Log.i(TAG, "捕获到了一个程序的异常");
+
+                //手动推出应用
+                System.exit(0);
             }
         });
     }
